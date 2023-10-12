@@ -7,17 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class NeoAiController {
-//    private final AzureOpenAiClient client;
-//
-//    public NeoAiController(AzureOpenAiClient client) {
-//        this.client = client;
-//    }
-//
-//    @GetMapping("/ai")
-//    public String getAi(@RequestParam(defaultValue = "Tell me a knock-knock joke") String prompt) {
-//        return client.generate(prompt);
-//    }
-
     private final RagService ragService;
 
     public NeoAiController(RagService ragService) {
