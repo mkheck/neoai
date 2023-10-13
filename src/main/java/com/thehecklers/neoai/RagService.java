@@ -55,6 +55,9 @@ public class RagService {
         // Step 3: Retrieve documents (hopefully) related to query
         var vectorStoreRetriever = new VectorStoreRetriever(vectorStore);
         List<Document> similarDocuments = vectorStoreRetriever.retrieve(message);
+        System.out.println("----- Query: " + message + " -----" );
+        System.out.println("----- Similar Documents -----");
+        similarDocuments.forEach(System.out::println);
 
         // Step 4: Embed documents into SystemMessage with the `system.st` prompt template
         var systemMessage = getSystemMessage(similarDocuments);

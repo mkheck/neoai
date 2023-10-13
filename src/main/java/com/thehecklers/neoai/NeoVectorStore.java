@@ -5,6 +5,7 @@ import org.springframework.ai.embedding.EmbeddingClient;
 import org.springframework.ai.vectorstore.VectorStore;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class NeoVectorStore implements VectorStore {
@@ -28,13 +29,16 @@ public class NeoVectorStore implements VectorStore {
 
     @Override
     public List<Document> similaritySearch(String query) {
-        //return null;
         System.out.println("Similarity Search query: " + query);
         List<Document> documents = new ArrayList<>();
-        //Iterator<Place> iterator = repo.findPlacesByAmenitiesLikeIgnoreCaseOrNameLikeIgnoreCaseOrHostLikeIgnoreCase(query)
-        Iterator<Place> iterator = repo.findPlacesByNameContainingIgnoreCase(query)
-                .iterator();
-        iterator.forEachRemaining(p -> documents.add(new Document(p.id(), Map.of(p.id(), p))));
+
+        var amenities = repo.findInAmenities(query);
+        System.out.println(" --- Amenities --- ");
+        amenities.forEach(System.out::println);
+        Iterator<Place> iterator = amenities.iterator();
+        iterator.forEachRemaining(p -> documents.add(new Document(p.name(), p.amenities()
+                .stream()
+                .collect(Collectors.toMap(Amenity::name, Amenity::name)))));
         return documents;
     }
 
