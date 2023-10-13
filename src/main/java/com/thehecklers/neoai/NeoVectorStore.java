@@ -4,8 +4,10 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingClient;
 import org.springframework.ai.vectorstore.VectorStore;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class NeoVectorStore implements VectorStore {
@@ -29,12 +31,12 @@ public class NeoVectorStore implements VectorStore {
 
     @Override
     public List<Document> similaritySearch(String query) {
-        System.out.println("Similarity Search query: " + query);
+        //System.out.println("Similarity Search query: " + query);
         List<Document> documents = new ArrayList<>();
 
         var amenities = repo.findInAmenities(query);
-        System.out.println(" --- Amenities --- ");
-        amenities.forEach(System.out::println);
+        //System.out.println(" --- Amenities --- ");
+        //amenities.forEach(System.out::println);
         Iterator<Place> iterator = amenities.iterator();
         iterator.forEachRemaining(p -> documents.add(new Document(p.name(), p.amenities()
                 .stream()
@@ -45,12 +47,13 @@ public class NeoVectorStore implements VectorStore {
     @Override
     public List<Document> similaritySearch(String query, int k) {
         //return null;
-        return similaritySearch(query).stream().limit(k).collect(Collectors.toList());
+        //return similaritySearch(query).stream().limit(k).collect(Collectors.toList());
+        return similaritySearch(query).subList(0, k);
     }
 
     @Override
     public List<Document> similaritySearch(String query, int k, double threshold) {
         //return null;
-        return similaritySearch(query, k);
+        return similaritySearch(query, k, 0D);
     }
 }
