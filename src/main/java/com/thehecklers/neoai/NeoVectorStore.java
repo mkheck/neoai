@@ -35,12 +35,15 @@ public class NeoVectorStore implements VectorStore {
         List<Document> documents = new ArrayList<>();
 
         var amenities = repo.findInAmenities(query);
-        //System.out.println(" --- Amenities --- ");
-        //amenities.forEach(System.out::println);
+        System.out.println(" --- Amenities --- ");
+        amenities.forEach(System.out::println);
+        System.out.println(" <--- Amenities ---> ");
         Iterator<Place> iterator = amenities.iterator();
-        iterator.forEachRemaining(p -> documents.add(new Document(p.name(), p.amenities()
-                .stream()
-                .collect(Collectors.toMap(Amenity::name, Amenity::name)))));
+        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
+                p.amenities().stream().collect(Collectors.toMap(Amenity::name, Amenity::name)))));
+        System.out.println(" --- Documents --- ");
+        documents.forEach(System.out::println);
+        System.out.println(" --- Documents --- ");
         return documents;
     }
 

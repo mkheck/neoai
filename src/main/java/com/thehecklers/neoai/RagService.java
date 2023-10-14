@@ -4,18 +4,14 @@ import org.springframework.ai.client.AiClient;
 import org.springframework.ai.client.Generation;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingClient;
-import org.springframework.ai.loader.impl.JsonLoader;
 import org.springframework.ai.prompt.Prompt;
 import org.springframework.ai.prompt.SystemPromptTemplate;
 import org.springframework.ai.prompt.messages.Message;
 import org.springframework.ai.prompt.messages.UserMessage;
-import org.springframework.ai.retriever.impl.VectorStoreRetriever;
-//import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,9 +49,9 @@ public class RagService {
 //        vectorStore.add(documents);
 
         // Step 3: Retrieve documents (hopefully) related to query
-        var vectorStoreRetriever = new VectorStoreRetriever(vectorStore);
-        List<Document> similarDocuments = vectorStoreRetriever.retrieve(message);
-        System.out.println("----- Query: " + message + " -----" );
+//        var vectorStoreRetriever = new VectorStoreRetriever(vectorStore);
+//        List<Document> similarDocuments = vectorStoreRetriever.retrieve(message);
+        List<Document> similarDocuments = vectorStore.similaritySearch(message);
         System.out.println("----- Similar Documents -----");
         similarDocuments.forEach(System.out::println);
 
@@ -65,12 +61,17 @@ public class RagService {
 
         // Step 5: Ask the AI model
         var prompt = new Prompt(List.of(systemMessage, userMessage));
+        System.out.println("----- Prompt -----");
+        System.out.println(prompt.getContents());
+        System.out.println("----- Prompt -----");
         var response = aiClient.generate(prompt);
         return response.getGeneration();
     }
 
     private Message getSystemMessage(List<Document> similarDocuments) {
         var documents = similarDocuments.stream().map(Document::getContent).collect(Collectors.joining("\n"));
+//        System.out.println("----- Documents -----");
+//        System.out.println(documents);
         var systemPromptTemplate = new SystemPromptTemplate(sysPrompt);
         var systemMessage = systemPromptTemplate.createMessage(Map.of("documents", documents));
         return systemMessage;
