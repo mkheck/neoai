@@ -25,16 +25,29 @@ public class NeoVectorStore implements VectorStore {
         return Optional.empty();
     }
 
+    public List<Document> similaritySearch(String pet, String location) {
+        List<Document> documents = new ArrayList<>();
+
+        var places = repo.findPlaces(pet, location);
+        System.out.println(" --- Places --- ");
+        places.forEach(System.out::println);
+        // First class kludge - clean this #@&^#&@ upppppp
+        Iterator<Place> iterator = places.iterator();
+        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
+                Map.of("pet", pet, "location", location))));
+
+        return documents;
+    }
+
     @Override
     public List<Document> similaritySearch(String query) {
-        System.out.println("Similarity Search query: " + query);
         List<Document> documents = new ArrayList<>();
 
         var amenities = repo.findInAmenities(query);
         var categories = repo.findInCategory(query);
-//        System.out.println(" --- Amenities --- ");
-//        amenities.forEach(System.out::println);
-//        System.out.println(" <--- Amenities ---> ");
+        System.out.println(" --- Amenities --- ");
+        amenities.forEach(System.out::println);
+        System.out.println(" <--- Amenities ---> ");
         // First class kludge - clean this #@&^#&@ upppppp
         Iterator<Place> iterator = amenities.iterator();
         iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),

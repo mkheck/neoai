@@ -49,7 +49,9 @@ public class RagService {
         // Step 3: Retrieve documents (hopefully) related to query
         //List<Document> similarDocuments = vectorStore.similaritySearch(message, 100);
         var petString = prompts.getOrDefault("pet", "dog").toString();
-        List<Document> similarDocuments = vectorStore.similaritySearch(petString, 100);
+        var locString = prompts.getOrDefault("location", "Chicago, IL").toString();
+//        List<Document> similarDocuments = vectorStore.similaritySearch(petString, 100);
+        List<Document> similarDocuments = vectorStore.similaritySearch(petString, locString);
         System.out.println("----- Similar Documents (count) -----> " + similarDocuments.size());
 
         // Step 4: Embed documents into SystemMessage with the `system.st` prompt template
