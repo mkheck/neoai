@@ -31,7 +31,7 @@ public class NeoVectorStore implements VectorStore {
         var places = repo.findPlaces(pet, location);
         System.out.println(" --- Places --- ");
         places.forEach(System.out::println);
-        // First class kludge - clean this #@&^#&@ upppppp
+        // First class kludge
         Iterator<Place> iterator = places.iterator();
         iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
                 Map.of("pet", pet, "location", location))));

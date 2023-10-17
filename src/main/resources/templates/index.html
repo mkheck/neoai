@@ -5,12 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>FloofTravel(tm)</title>
 </head>
-<!--      th:action="@{/ai/{pet}(pet=${user.id})}"-->
 <body>
 <form action="#" th:action="@{/aiui}" method="post">
     <input type="text" th:name="pet" th:label="Pet"/>
     <input type="text" th:name="location" th:label="Location"/>
     <input type="submit" value="Search">
     <p th:text="${generation}"/>
+    <p th:text="${generationwithneo}"/>
 </body>
 </html>

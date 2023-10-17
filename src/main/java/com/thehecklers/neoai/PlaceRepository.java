@@ -7,7 +7,7 @@ public interface PlaceRepository extends Neo4jRepository<Place, String> {
     @Query("CALL apoc.spatial.geocodeOnce($location) YIELD location\n" +
             "WITH location.latitude as locLat, location.longitude as locLon\n" +
             "MATCH (p:Place)\n" +
-            "WHERE point.distance(point({longitude: p.lon, latitude: p.lat}), point({longitude: locLon, latitude: locLat})) < 2500\n" +
+//            "WHERE point.distance(point({longitude: p.lon, latitude: p.lat}), point({longitude: locLon, latitude: locLat})) < 2500\n" +
             "WITH p\n" +
             "CALL {\n" +
             "    WITH p\n" +

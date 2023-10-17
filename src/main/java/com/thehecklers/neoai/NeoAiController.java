@@ -25,8 +25,10 @@ public class NeoAiController {
     public String aiui(@RequestParam(defaultValue = "pet") String pet,
                        @RequestParam(defaultValue = "location") String location,
                        Model model) {
-        Generation gen = generate(pet, location);
+        Generation gen = generate(pet, location, 1);
         model.addAttribute("generation", gen.getText());
+        gen = generate(pet, location, 2);
+        model.addAttribute("generationwithneo", gen.getText());
         return "index";
     }
 
@@ -35,8 +37,13 @@ public class NeoAiController {
 //    @RequestMapping(path = "/ai", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public Generation generate(@RequestParam(defaultValue = "pet") String pet,
-                               @RequestParam(defaultValue = "location") String location) {
+                               @RequestParam(defaultValue = "location") String location,
+                               int which) {
         HashMap<String, Object> prompts = new HashMap<>(Map.of("pet", pet, "location", location));
-        return ragService.retrieve(prompts);
+        if (which ==1) {
+            return ragService.getIt(prompts);
+        } else {
+            return ragService.retrieve(prompts);
+        }
     }
 }

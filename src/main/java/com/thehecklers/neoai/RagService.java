@@ -13,14 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class RagService {
     @Value("classpath:/prompts/system.st")
     private Resource sysPrompt;
 
-//    private final AzureOpenAiClient aiClient;
+    //    private final AzureOpenAiClient aiClient;
     private final AiClient aiClient;
     private final EmbeddingClient embeddingClient;
 
@@ -32,7 +31,21 @@ public class RagService {
         this.repo = repo;
     }
 
-    //public Generation retrieve(String message) {
+    public Generation getIt(HashMap<String, Object> prompts) {
+        var systemMessage = new SystemPromptTemplate(sysPrompt).createMessage(prompts);
+        System.out.println("----- System Message -----> " + systemMessage.getContent());
+
+        UserMessage userMessage = new UserMessage("");
+
+        // Step 5: Ask the AI model
+        var prompt = new Prompt(List.of(systemMessage, userMessage));
+        System.out.println("----- Prompt -----");
+        System.out.println(prompt.getContents());
+        System.out.println("----- Prompt -----");
+        var response = aiClient.generate(prompt);
+        return response.getGeneration();
+    }
+
     public Generation retrieve(HashMap<String, Object> prompts) {
         // Step 1: Load JSON document as Documents
 //        JsonLoader jsonLoader = new JsonLoader(winResource, "name", "year");
