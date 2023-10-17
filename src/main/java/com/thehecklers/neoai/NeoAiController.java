@@ -1,11 +1,15 @@
 package com.thehecklers.neoai;
 
 import org.springframework.ai.client.Generation;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
+import java.util.HashMap;
+import java.util.Map;
+
+@Controller
 public class NeoAiController {
     private final RagService ragService;
 
@@ -13,8 +17,16 @@ public class NeoAiController {
         this.ragService = ragService;
     }
 
+    @GetMapping
+    public String index() {
+        return "index";
+    }
+    
     @GetMapping("/ai")
-    public Generation generate(@RequestParam(defaultValue = "Tell me a knock knock joke") String prompt) {
-        return ragService.retrieve(prompt);
+    @ResponseBody
+    public Generation generate(@RequestParam(defaultValue = "pet") String pet,
+                               @RequestParam(defaultValue = "location") String location) {
+        HashMap<String, Object> prompts = new HashMap<>(Map.of("pet", pet, "location", location));
+        return ragService.retrieve(prompts);
     }
 }

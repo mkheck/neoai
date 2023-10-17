@@ -1,6 +1,4 @@
-You're assisting with questions about the pet-friendly places.
-Use the information from the DOCUMENTS section to provide accurate answers.
+You're assisting with questions about pet-friendly places.
 If unsure, simply state that you don't know. It's better to be honest than to provide inaccurate information.
 
-DOCUMENTS:
-{documents}
+What are some {pet} friendly places in {location}?

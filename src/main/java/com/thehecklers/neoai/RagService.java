@@ -6,21 +6,17 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingClient;
 import org.springframework.ai.prompt.Prompt;
 import org.springframework.ai.prompt.SystemPromptTemplate;
-import org.springframework.ai.prompt.messages.Message;
 import org.springframework.ai.prompt.messages.UserMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class RagService {
-    @Value("classpath:/data/winners.json")
-    private Resource winResource;
-
     @Value("classpath:/prompts/system.st")
     private Resource sysPrompt;
 
@@ -36,28 +32,33 @@ public class RagService {
         this.repo = repo;
     }
 
-    public Generation retrieve(String message) {
-
+    //public Generation retrieve(String message) {
+    public Generation retrieve(HashMap<String, Object> prompts) {
         // Step 1: Load JSON document as Documents
 //        JsonLoader jsonLoader = new JsonLoader(winResource, "name", "year");
 //        var documents = jsonLoader.load();
 
         // Step 2: Create embeddings and save to vector store
         //var vectorStore = new InMemoryVectorStore(embeddingClient);
-        //var vectorStore = new VectorStore(embeddingClient) {};
         var vectorStore = new NeoVectorStore(embeddingClient, repo);
 //        vectorStore.add(documents);
 
+        System.out.println("----- Prompts -----" + prompts);
+        prompts.forEach((k, v) -> System.out.println("Key: " + k + ", Value: " + v));
+
         // Step 3: Retrieve documents (hopefully) related to query
-//        var vectorStoreRetriever = new VectorStoreRetriever(vectorStore);
-//        List<Document> similarDocuments = vectorStoreRetriever.retrieve(message);
-        List<Document> similarDocuments = vectorStore.similaritySearch(message);
-        System.out.println("----- Similar Documents -----");
-        similarDocuments.forEach(System.out::println);
+        //List<Document> similarDocuments = vectorStore.similaritySearch(message, 100);
+        var petString = prompts.getOrDefault("pet", "dog").toString();
+        List<Document> similarDocuments = vectorStore.similaritySearch(petString, 100);
+        System.out.println("----- Similar Documents (count) -----> " + similarDocuments.size());
 
         // Step 4: Embed documents into SystemMessage with the `system.st` prompt template
-        var systemMessage = getSystemMessage(similarDocuments);
-        UserMessage userMessage = new UserMessage(message);
+        //var systemMessage = getSystemMessage(similarDocuments, prompts);
+        //var systemMessage = systemPromptTemplate.createMessage(Map.of("documents", documents));
+        var systemMessage = new SystemPromptTemplate(sysPrompt).createMessage(prompts);
+        System.out.println("----- System Message -----> " + systemMessage.getContent());
+
+        UserMessage userMessage = new UserMessage("");
 
         // Step 5: Ask the AI model
         var prompt = new Prompt(List.of(systemMessage, userMessage));
@@ -68,12 +69,11 @@ public class RagService {
         return response.getGeneration();
     }
 
-    private Message getSystemMessage(List<Document> similarDocuments) {
-        var documents = similarDocuments.stream().map(Document::getContent).collect(Collectors.joining("\n"));
-//        System.out.println("----- Documents -----");
-//        System.out.println(documents);
-        var systemPromptTemplate = new SystemPromptTemplate(sysPrompt);
-        var systemMessage = systemPromptTemplate.createMessage(Map.of("documents", documents));
-        return systemMessage;
-    }
+//    private Message getSystemMessage(List<Document> similarDocuments, Map<String, String> prompts) {
+//        //var documents = similarDocuments.stream().map(Document::getContent).collect(Collectors.joining("\n"));
+//        var systemPromptTemplate = new SystemPromptTemplate(sysPrompt);
+//        //var systemMessage = systemPromptTemplate.createMessage(Map.of("documents", documents));
+//        var systemMessage = systemPromptTemplate.createMessage();
+//        return systemMessage;
+//    }
 }
