@@ -68,12 +68,4 @@ public class RagService {
         var response = aiClient.generate(prompt);
         return response.getGeneration();
     }
-
-//    private Message getSystemMessage(List<Document> similarDocuments, Map<String, String> prompts) {
-//        //var documents = similarDocuments.stream().map(Document::getContent).collect(Collectors.joining("\n"));
-//        var systemPromptTemplate = new SystemPromptTemplate(sysPrompt);
-//        //var systemMessage = systemPromptTemplate.createMessage(Map.of("documents", documents));
-//        var systemMessage = systemPromptTemplate.createMessage();
-//        return systemMessage;
-//    }
 }

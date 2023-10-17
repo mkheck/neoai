@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<!--    <meta charset="UTF-8">-->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!--    <meta charset="UTF-8">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>FloofTravel(tm)</title>
 </head>
+<!--      th:action="@{/ai/{pet}(pet=${user.id})}"-->
 <body>
-    <p th:text="${generation}" />
+<form action="#" th:action="@{/aiui}" method="post">
+    <input type="text" th:name="pet" th:label="Pet"/>
+    <input type="text" th:name="location" th:label="Location"/>
+    <input type="submit" value="Search">
+    <p th:text="${generation}"/>
 </body>
 </html>
