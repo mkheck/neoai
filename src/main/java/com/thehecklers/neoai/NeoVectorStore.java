@@ -28,7 +28,7 @@ public class NeoVectorStore implements VectorStore {
     public List<Document> similaritySearch(String pet, String location) {
         List<Document> documents = new ArrayList<>();
 
-        var places = repo.findPlaces(pet, location);
+        var places = repo.findPlaces(pet);
         System.out.println(" --- Places --- ");
         places.forEach(System.out::println);
         // First class kludge

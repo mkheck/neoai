@@ -33,8 +33,6 @@ public class NeoAiController {
     }
 
     @GetMapping("/ai")
-//    @PostMapping("/ai")
-//    @RequestMapping(path = "/ai", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public Generation generate(@RequestParam(defaultValue = "pet") String pet,
                                @RequestParam(defaultValue = "location") String location,
