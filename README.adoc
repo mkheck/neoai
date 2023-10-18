@@ -1,0 +1,35 @@
+= NeoAI: Putting Spring Boot, Spring AI, and Neo4j to work to hack pet travel!
+
+== Maintainers
+
+* Mark Heckler
+* https://twitter.com/mkheck[@mkheck on Twitter/X]
+
+* Jennifer Reif
+* https://twitter.com/jmhreif[@mkheck on Twitter/X]
+
+
+== Purpose
+
+This repo accompanies the session titled *"Fluffy and Fido on the Go: Applying Graph Data and AI to Hack Pet Travel"* and includes all code written within the session and quite a bit more. We'll update and add to these repos as the session evolves and/or as we think of more things to share.
+
+*_Star+watch this repo (and linked repos) for updates!_*
+
+== Notes
+
+The following properties *MUST* be set within your application's environment for successful execution:
+
+export SPRING_AI_AZURE_OPENAI_API_KEY=<Azure Open AI Key or Open AI Key>
+export SPRING_AI_AZURE_OPENAI_ENDPOINT=<Azure Open AI Endpoint or Open AI Endpoint>
+
+export SPRING_NEO4J_URI=<Neo4j URI>
+export SPRING_NEO4J_AUTHENTICATION_USERNAME=<Neo4j username>
+export SPRING_NEO4J_AUTHENTICATION_PASSWORD=<Neo4j password>
+
+These can be set in the terminal/shell environment (above example is for Linux/MacOS) or via properties in your Spring Boot app (by converting to `spring.ai.azure.openai.api-key`, etc.), and many other ways besides. Please refer to https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config[this reference in the Spring Boot documentation] for configuration options and their precedence and order of evaluation by Spring Boot apps.
+
+Once the above properties are set, you can run the application via `./mvnw spring-boot:run` or from your IDE (if env vars are set there) to exercise the application.
+
+== Related presentation
+
+(pending, from NODES 2023 in October)
