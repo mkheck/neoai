@@ -4,6 +4,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingClient;
 import org.springframework.ai.vectorstore.VectorStore;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class NeoVectorStore implements VectorStore {
@@ -31,8 +32,9 @@ public class NeoVectorStore implements VectorStore {
 
         var categories = repo.findInCategory(query);
         Iterator<Place> iterator = categories.iterator();
-        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
-                Map.of("query", query))));
+//        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
+//                Map.of("query", query))));
+        iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
 
 //        System.out.println(" --- Documents --- ");
 //        documents.forEach(System.out::println);
@@ -44,16 +46,18 @@ public class NeoVectorStore implements VectorStore {
         List<Document> documents = new ArrayList<>();
 
         var places = repo.findPlaces(type, location);
-        System.out.println(" --- Places --- ");
+        System.out.println(" --- Step 1: Places --- ");
         places.forEach(System.out::println);
+
         // First class kludge
         Iterator<Place> iterator = places.iterator();
-        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
-                Map.of("type", type, "location", location))));
+//        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
+//                Map.of("type", type, "location", location))));
+//        iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
+        iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
 
-        System.out.println(" --- Documents --- ");
+        System.out.println(" --- Step 2: Raw Documents --- ");
         documents.forEach(System.out::println);
-        System.out.println(" --- Documents --- ");
 
         return documents;
     }
