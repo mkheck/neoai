@@ -7,4 +7,6 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 @Node
 public record Place(@Id String id,
                     String name,
+                    String description,
+                    String website,
                     @Relationship(type = "CONTAINS", direction = Relationship.Direction.INCOMING) Subcategory subcategory) {}

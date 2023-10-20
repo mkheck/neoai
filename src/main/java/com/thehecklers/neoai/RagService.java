@@ -36,24 +36,25 @@ public class RagService {
     }
 
     public Generation getIt(HashMap<String, Object> prompts) {
+        System.out.println("----- PromptStuffing: Start -----\n");
         prompts.put("documents", "");
         var systemMessage = new SystemPromptTemplate(sysPrompt).createMessage(prompts);
-        System.out.println("----- System Message -----> " + systemMessage.getContent());
 
         // Step 5: Ask the AI model
         var prompt = new Prompt(List.of(systemMessage));
-        System.out.println("----- Send to AI -----");
+        System.out.println("----- NonNeo4j: Send to AI -----");
         System.out.println(prompt.getContents());
-        System.out.println("----- END Send to AI -----");
         var response = aiClient.generate(prompt);
+        System.out.println("----- PromptStuffing: End -----\n");
         return response.getGeneration();
     }
 
     public Generation retrieve(HashMap<String, Object> prompts) {
+        System.out.println("----- RAG: Start -----\n");
         // Step 2: Create embeddings and save to vector store
         var vectorStore = new NeoVectorStore(embeddingClient, repo);
 
-        System.out.println("----- Search Values ----- \n" + prompts);
+        System.out.println("----- Search Values ----- \n" + prompts + "\n");
 //        prompts.forEach((k, v) -> System.out.println("Key: " + k + ", Value: " + v));
 
         // Step 3: Retrieve documents (hopefully) related to query
@@ -61,18 +62,19 @@ public class RagService {
         var locString = prompts.getOrDefault("location", "New York").toString();
         List<Document> similarDocuments = vectorStore.similaritySearch(typeString, locString);
         System.out.println("----- Similar Documents (count) -----> " + similarDocuments.size());
+        System.out.println();
 
         // Step 4: Embed documents into SystemMessage with the `system.st` prompt template
-        prompts.put("documents", similarDocuments);
+        String documents = similarDocuments.stream().map(entry -> entry.getContent()).collect(Collectors.joining("\n"));
+        prompts.put("documents", documents);
         var systemMessage = new SystemPromptTemplate(sysPrompt).createMessage(prompts);
-        System.out.println("----- System Message -----> " + systemMessage.getContent());
 
         // Step 5: Ask the AI model
         var prompt = new Prompt(List.of(systemMessage));
         System.out.println("----- Send to AI -----");
         System.out.println(prompt.getContents());
-        System.out.println("----- END Send to AI -----");
         var response = aiClient.generate(prompt);
+        System.out.println("----- RAG: End -----\n");
         return response.getGeneration();
     }
 }
