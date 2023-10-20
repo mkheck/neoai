@@ -7,10 +7,12 @@
 </head>
 <body>
 <form action="#" th:action="@{/aiui}" method="post">
-    <input type="text" th:name="pet" th:label="Pet"/>
+    <input type="text" th:name="type" th:label="Type"/>
     <input type="text" th:name="location" th:label="Location"/>
     <input type="submit" value="Search">
+    <h3>AI</h3>
     <p th:text="${generation}"/>
+    <h3>Neo4j + AI</h3>
     <p th:text="${generationwithneo}"/>
 </body>
 </html>

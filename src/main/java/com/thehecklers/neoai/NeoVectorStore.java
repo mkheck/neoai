@@ -25,33 +25,11 @@ public class NeoVectorStore implements VectorStore {
         return Optional.empty();
     }
 
-    public List<Document> similaritySearch(String pet, String location) {
-        List<Document> documents = new ArrayList<>();
-
-        var places = repo.findPlaces(pet);
-        System.out.println(" --- Places --- ");
-        places.forEach(System.out::println);
-        // First class kludge
-        Iterator<Place> iterator = places.iterator();
-        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
-                Map.of("pet", pet, "location", location))));
-
-        return documents;
-    }
-
     @Override
     public List<Document> similaritySearch(String query) {
         List<Document> documents = new ArrayList<>();
 
-//        var amenities = repo.findInAmenities(query);
         var categories = repo.findInCategory(query);
-//        System.out.println(" --- Amenities --- ");
-//        amenities.forEach(System.out::println);
-//        System.out.println(" <--- Amenities ---> ");
-        // First class kludge - clean this #@&^#&@ upppppp
-//        Iterator<Place> iterator = amenities.iterator();
-//        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
-//                Map.of("query", query))));
         Iterator<Place> iterator = categories.iterator();
         iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
                 Map.of("query", query))));
@@ -59,6 +37,24 @@ public class NeoVectorStore implements VectorStore {
 //        System.out.println(" --- Documents --- ");
 //        documents.forEach(System.out::println);
 //        System.out.println(" --- Documents --- ");
+        return documents;
+    }
+
+    public List<Document> similaritySearch(String type, String location) {
+        List<Document> documents = new ArrayList<>();
+
+        var places = repo.findPlaces(type, location);
+        System.out.println(" --- Places --- ");
+        places.forEach(System.out::println);
+        // First class kludge
+        Iterator<Place> iterator = places.iterator();
+        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
+                Map.of("type", type, "location", location))));
+
+        System.out.println(" --- Documents --- ");
+        documents.forEach(System.out::println);
+        System.out.println(" --- Documents --- ");
+
         return documents;
     }
 
