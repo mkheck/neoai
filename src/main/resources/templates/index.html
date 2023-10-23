@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!--    <meta charset="UTF-8">-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>FloofTravel(tm)</title>
+<!--    <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet"/>-->
+<!--    <link th:href="@{/css/app.css}" rel="stylesheet"/>-->
+<!--    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}" defer></script>-->
+<!--    <script th:src="@{/js/app.js}" defer></script>-->
+    <title>FloofTravel</title>
 </head>
 <body>
+<header><h2>FloofTravel: Adventure Awaits</h2></header>
 <form action="#" th:action="@{/aiui}" method="post">
-    <input type="text" th:name="type" th:label="Type"/>
-    <input type="text" th:name="location" th:label="Location"/>
-    <input type="submit" value="Search">
-    <h3>AI</h3>
-    <p th:text="${generation}"/>
-    <h3>Neo4j + AI</h3>
-    <p th:text="${generationwithneo}"/>
+    <p></p>
+    <table>
+        <tr>
+            <td><label for="type">Type:</label></td>
+            <td><input type="text" th:name="type"/></td>
+        </tr>
+        <tr>
+            <td><label for="location">Location:</label></td>
+            <td><input type="text" th:name="location"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Search"></td>
+        </tr>
+    </table>
+    <h3>Results</h3>
+    <p th:text="${generation}" th:border="narrow"/>
 </body>
 </html>
