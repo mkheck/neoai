@@ -21,27 +21,22 @@ public class NeoAiController {
         return "index";
     }
 
+    // UI (such as it is)
     @PostMapping("/aiui")
     public String aiui(@RequestParam(defaultValue = "type") String type,
                        @RequestParam(defaultValue = "location") String location,
                        Model model) {
-        Generation gen = generate(type, location, 1);
+        Generation gen = generate(type, location);
         model.addAttribute("generation", gen.getText());
-        gen = generate(type, location, 2);
-        model.addAttribute("generationwithneo", gen.getText());
         return "index";
     }
 
+    // API
     @GetMapping("/ai")
     @ResponseBody
     public Generation generate(@RequestParam(defaultValue = "type") String type,
-                               @RequestParam(defaultValue = "location") String location,
-                               int which) {
+                               @RequestParam(defaultValue = "location") String location) {
         HashMap<String, Object> prompts = new HashMap<>(Map.of("type", type, "location", location));
-        if (which ==1) {
-            return ragService.getIt(prompts);
-        } else {
-            return ragService.retrieve(prompts);
-        }
+        return ragService.retrieve(prompts);
     }
 }

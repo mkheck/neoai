@@ -4,7 +4,6 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
 public interface PlaceRepository extends Neo4jRepository<Place, String> {
-
 //    @Query("MATCH (p:Place)<-[:CONTAINS]-(s:Subcategory)<-[:CONTAINS]-(c:Category)\n" +
 //            "WHERE p.city IN ['Manhattan', 'Brooklyn', 'New York', 'Queens', 'Staten Island', 'The Bronx']\n" +
 //            "AND s.name =~ ('(?i).*'+$pet+'.*')\n" +

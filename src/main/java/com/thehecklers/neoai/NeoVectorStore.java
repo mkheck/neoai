@@ -4,8 +4,10 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingClient;
 import org.springframework.ai.vectorstore.VectorStore;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 public class NeoVectorStore implements VectorStore {
     private final EmbeddingClient client;
@@ -32,13 +34,8 @@ public class NeoVectorStore implements VectorStore {
 
         var categories = repo.findInCategory(query);
         Iterator<Place> iterator = categories.iterator();
-//        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
-//                Map.of("query", query))));
         iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
 
-//        System.out.println(" --- Documents --- ");
-//        documents.forEach(System.out::println);
-//        System.out.println(" --- Documents --- ");
         return documents;
     }
 
@@ -46,18 +43,10 @@ public class NeoVectorStore implements VectorStore {
         List<Document> documents = new ArrayList<>();
 
         var places = repo.findPlaces(type, location);
-        System.out.println(" --- Step 1: Places --- ");
-        places.forEach(System.out::println);
 
         // First class kludge
         Iterator<Place> iterator = places.iterator();
-//        iterator.forEachRemaining(p -> documents.add(new Document(null == p.name() ? "No name" : p.name(),
-//                Map.of("type", type, "location", location))));
-//        iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
         iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
-
-        System.out.println(" --- Step 2: Raw Documents --- ");
-        documents.forEach(System.out::println);
 
         return documents;
     }
@@ -70,7 +59,6 @@ public class NeoVectorStore implements VectorStore {
 
     @Override
     public List<Document> similaritySearch(String query, int k, double threshold) {
-        //return null;
         return similaritySearch(query, k, 0D);
     }
 }
