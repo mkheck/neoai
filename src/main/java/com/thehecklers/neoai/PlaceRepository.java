@@ -17,6 +17,8 @@ public interface PlaceRepository extends Neo4jRepository<Place, String> {
             "RETURN p, collect(r), collect(s), collect(r2), collect(c);")
     Iterable<Place> findPlaces(String type, String location);
 
-    @Query("MATCH (p:Place)<-[r:CONTAINS*1..2]-(c:Category) WHERE c.name =~ ('(?i).*'+$pet+'.*') RETURN p, collect(r), collect(c);")
+    @Query("MATCH (p:Place)<-[r:CONTAINS]-(s:Subcategory)<-[r2:CONTAINS]-(c:Category)" +
+            "WHERE s.name CONTAINS toLower($pet)" +
+            "RETURN p, collect(r), collect(c);")
     Iterable<Place> findInCategory(String pet);
 }
