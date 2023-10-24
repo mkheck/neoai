@@ -32,9 +32,12 @@ public class NeoVectorStore implements VectorStore {
     public List<Document> similaritySearch(String query) {
         List<Document> documents = new ArrayList<>();
 
-        var categories = repo.findInCategory(query);
-        Iterator<Place> iterator = categories.iterator();
-        iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
+//        var categories = repo.findInCategory(query);
+//        Iterator<Place> iterator = categories.iterator();
+//        iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
+        repo.findInCategory(query)
+                .iterator()
+                .forEachRemaining(p -> documents.add(new Document(p.toString())));
 
         return documents;
     }
