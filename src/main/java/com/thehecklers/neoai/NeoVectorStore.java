@@ -50,6 +50,8 @@ public class NeoVectorStore implements VectorStore {
         // First class kludge
         Iterator<Place> iterator = places.iterator();
         iterator.forEachRemaining(p -> documents.add(new Document(p.toString())));
+        System.out.println("---- DOCUMENTS ----");
+        System.out.println(documents);
 
         return documents;
     }

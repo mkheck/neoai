@@ -6,7 +6,7 @@
 * https://twitter.com/mkheck[@mkheck on Twitter/X]
 
 * Jennifer Reif
-* https://twitter.com/jmhreif[@mkheck on Twitter/X]
+* https://twitter.com/jmhreif[@JMHReif on Twitter/X]
 
 
 == Purpose
@@ -33,6 +33,10 @@ These can be set in the terminal/shell environment (above example is for Linux/M
 
 Once the above properties are set, you can run the application via `./mvnw spring-boot:run` or from your IDE (if env vars are set there) to exercise the application.
 
+== Data set
+
+* Neo4j data import: https://github.com/JMHReif/graph-demo-datasets/tree/main/pet-travel[pet travel]
+
 == Related presentation
 
-(pending, from NODES 2023 in October)
+* https://speakerdeck.com/jmhreif/fluffy-and-fido-on-the-go-applying-graph-data-and-ai-to-hack-pet-travel[NODES 2023]

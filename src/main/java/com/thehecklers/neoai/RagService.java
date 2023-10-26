@@ -38,6 +38,9 @@ public class RagService {
         // Embed documents into SystemMessage with the `system.st` prompt template
         prompts.put("documents", vectorStore.similaritySearch(typeString, locString));
         var systemMessage = new SystemPromptTemplate(sysPrompt).createMessage(prompts);
+        System.out.println("---- SEND TO AI ----");
+        System.out.println(systemMessage);
+        System.out.println("---- END SEND TO AI ----");
 
         // Query the AI model
         return aiClient.generate(new Prompt(systemMessage)).getGeneration();
